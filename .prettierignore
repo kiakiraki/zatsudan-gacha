@@ -1,0 +1,15 @@
+node_modules/
+.wrangler/
+
+# Build output
+public/main.js
+public/main.js.map
+public/styles.css
+public/data/
+
+# Lockfile and TS build cache
+pnpm-lock.yaml
+*.tsbuildinfo
+
+# Custom-formatted JSON (blank-line separators between categories)
+data/topics.json
