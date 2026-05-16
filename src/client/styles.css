@@ -28,7 +28,13 @@ body {
 }
 
 body {
-  font-family: system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo',
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Hiragino Sans',
+    'Yu Gothic UI',
+    'Meiryo',
     sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -123,7 +129,10 @@ main {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .topic-card:hover {
@@ -191,7 +200,10 @@ main {
   font-size: 0.78rem;
   font-weight: 400;
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
   font-family: inherit;
   letter-spacing: 0.02em;
 }
