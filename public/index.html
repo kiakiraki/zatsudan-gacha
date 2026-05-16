@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>雑談ガチャ</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <main>
+      <header class="site-header">
+        <h1>雑談ガチャ</h1>
+        <p class="tagline">今日のスタイルとネタを引いて、ゆるく話そう</p>
+      </header>
+
+      <section class="section" aria-labelledby="style-heading">
+        <div class="section-head">
+          <h2 id="style-heading">今日の会話スタイル</h2>
+          <button id="reroll-style" class="btn" type="button">スタイルを引き直す</button>
+        </div>
+        <div id="style-card" class="style-card" aria-live="polite">
+          <p class="style-description">読み込み中...</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="topics-heading">
+        <div class="section-head">
+          <h2 id="topics-heading">雑談ネタ（9個）</h2>
+          <button id="reroll-topics" class="btn" type="button">ネタを引き直す</button>
+        </div>
+        <div id="topics-grid" class="topics-grid" aria-live="polite"></div>
+      </section>
+
+      <footer class="site-footer">
+        💬 スタイルにこだわらず、気になるネタから自由に話すのもOK
+      </footer>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

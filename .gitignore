@@ -1,0 +1,12 @@
+node_modules/
+.wrangler/
+.dev.vars
+
+# TypeScript composite build cache
+*.tsbuildinfo
+
+# Build output (copied/bundled from src and data)
+public/main.js
+public/main.js.map
+public/styles.css
+public/data/

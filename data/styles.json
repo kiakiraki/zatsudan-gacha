@@ -1,0 +1,22 @@
+[
+  {
+    "id": "good-and-new",
+    "name": "Good & New",
+    "description": "この24時間以内にあった「よかったこと」か「新しい発見」を一つずつ話します"
+  },
+  {
+    "id": "check-in",
+    "name": "チェックイン",
+    "description": "今の気分や体調を一言で共有します"
+  },
+  {
+    "id": "win-learn-help",
+    "name": "Win / Learn / Help",
+    "description": "最近の成果・学んだこと・助けてほしいことを一つずつ"
+  },
+  {
+    "id": "current-favorite",
+    "name": "最近ハマってるもの",
+    "description": "趣味・道具・コンテンツなど、最近夢中になっているものを共有"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "name": "zatsudan-gacha",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:watch": "node build.mjs --watch",
+    "dev": "wrangler dev",
+    "deploy": "pnpm run build && wrangler deploy",
+    "typecheck": "tsc --build"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250121.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^4.0.0"
+  }
+}
