@@ -4,6 +4,8 @@
 今日の「会話スタイル」を1つと、「雑談ネタ」を9個ランダムに引いて表示します。
 Cloudflare Workers (Workers Assets) で配信します。
 
+🌐 **本番**: https://zatsudan-gacha.kiakiraki.workers.dev
+
 ## 構成
 
 ```
