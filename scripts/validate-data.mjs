@@ -10,6 +10,9 @@ const VALID_CATEGORIES = new Set([
   'bgm',
   'season',
   'lifestyle',
+  'imagination',
+  'gadget',
+  'learning',
 ]);
 
 const TOPIC_ID_PATTERN = /^topic-\d{3}$/;
