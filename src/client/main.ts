@@ -32,6 +32,9 @@ const CATEGORY_LABEL: Record<string, string> = {
   bgm: 'BGM',
   season: '季節',
   lifestyle: '暮らし',
+  imagination: 'もしも',
+  gadget: 'ガジェット',
+  learning: '学び',
 };
 
 async function loadData(): Promise<AppData> {
