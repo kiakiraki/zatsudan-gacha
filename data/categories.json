@@ -86,5 +86,21 @@
       "light": { "bg": "#f5e0d6", "text": "#9c5230" },
       "dark": { "bg": "#463028", "text": "#d99e7d" }
     }
+  },
+  {
+    "id": "nature",
+    "label": "自然",
+    "colors": {
+      "light": { "bg": "#dcefe2", "text": "#337a55" },
+      "dark": { "bg": "#293f31", "text": "#8fcaa8" }
+    }
+  },
+  {
+    "id": "web",
+    "label": "ネット",
+    "colors": {
+      "light": { "bg": "#d6edf3", "text": "#19708e" },
+      "dark": { "bg": "#263c44", "text": "#7cc0d6" }
+    }
   }
 ]
