@@ -141,48 +141,16 @@ main {
   border-color: #d8d6cd;
 }
 
+/* タグ色は data/categories.json の値を JS がカスタムプロパティとして注入する */
 .category-tag {
   align-self: flex-start;
   font-size: 0.7rem;
-  color: var(--cat-text, var(--tag-text));
-  background: var(--cat-bg, var(--tag-bg));
+  color: var(--cat-text-light, var(--tag-text));
+  background: var(--cat-bg-light, var(--tag-bg));
   padding: 2px 9px;
   border-radius: 999px;
   letter-spacing: 0.05em;
   font-weight: 500;
-}
-
-.topic-card[data-category='tools'] {
-  --cat-bg: #e7ebef;
-  --cat-text: #4a5563;
-}
-.topic-card[data-category='food'] {
-  --cat-bg: #f5e9d3;
-  --cat-text: #8a5e1f;
-}
-.topic-card[data-category='hobby'] {
-  --cat-bg: #ece2f3;
-  --cat-text: #6b4a96;
-}
-.topic-card[data-category='childhood'] {
-  --cat-bg: #f5edcc;
-  --cat-text: #8a6c1a;
-}
-.topic-card[data-category='travel'] {
-  --cat-bg: #d9e9e9;
-  --cat-text: #2c7a78;
-}
-.topic-card[data-category='bgm'] {
-  --cat-bg: #f3dee7;
-  --cat-text: #a04a72;
-}
-.topic-card[data-category='season'] {
-  --cat-bg: #dce8d4;
-  --cat-text: #4f7841;
-}
-.topic-card[data-category='lifestyle'] {
-  --cat-bg: #efe1cd;
-  --cat-text: #84613a;
 }
 
 .topic-text {
@@ -333,37 +301,9 @@ main {
     border-color: #444851;
   }
 
-  .topic-card[data-category='tools'] {
-    --cat-bg: #353b44;
-    --cat-text: #b3bccc;
-  }
-  .topic-card[data-category='food'] {
-    --cat-bg: #463a29;
-    --cat-text: #d9b078;
-  }
-  .topic-card[data-category='hobby'] {
-    --cat-bg: #3d2f48;
-    --cat-text: #c2a4dd;
-  }
-  .topic-card[data-category='childhood'] {
-    --cat-bg: #443a23;
-    --cat-text: #d9c074;
-  }
-  .topic-card[data-category='travel'] {
-    --cat-bg: #2c3f3f;
-    --cat-text: #88c2c0;
-  }
-  .topic-card[data-category='bgm'] {
-    --cat-bg: #422a35;
-    --cat-text: #d990a8;
-  }
-  .topic-card[data-category='season'] {
-    --cat-bg: #2e3b30;
-    --cat-text: #94c089;
-  }
-  .topic-card[data-category='lifestyle'] {
-    --cat-bg: #423829;
-    --cat-text: #d4b285;
+  .category-tag {
+    color: var(--cat-text-dark, var(--tag-text));
+    background: var(--cat-bg-dark, var(--tag-bg));
   }
 
   .error-banner {

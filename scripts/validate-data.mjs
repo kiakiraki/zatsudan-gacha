@@ -1,26 +1,17 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
 
-const VALID_CATEGORIES = new Set([
-  'tools',
-  'food',
-  'hobby',
-  'childhood',
-  'travel',
-  'bgm',
-  'season',
-  'lifestyle',
-  'imagination',
-  'gadget',
-  'learning',
-]);
-
-const TOPIC_ID_PATTERN = /^topic-\d{3}$/;
+const TOPIC_ID_PATTERN = /^topic-\d{3,}$/;
+const COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 
 const errors = [];
 
 function check(condition, message) {
   if (!condition) errors.push(message);
+}
+
+function isRecord(value) {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function readJson(path) {
@@ -32,6 +23,50 @@ function readJson(path) {
   }
 }
 
+// --- categories.json ---
+const categories = readJson('data/categories.json');
+const categoryIds = new Set();
+
+if (Array.isArray(categories)) {
+  check(categories.length >= 1, 'categories.json: must have at least 1 entry');
+
+  for (const [i, category] of categories.entries()) {
+    if (!isRecord(category)) {
+      errors.push(`categories[${i}]: must be an object`);
+      continue;
+    }
+    const ctx = `categories[${i}] (id=${category.id ?? '?'})`;
+
+    check(
+      typeof category.id === 'string' && category.id.length > 0,
+      `${ctx}: id must be non-empty string`,
+    );
+    check(!categoryIds.has(category.id), `${ctx}: duplicate id`);
+    categoryIds.add(category.id);
+
+    check(
+      typeof category.label === 'string' && category.label.length > 0,
+      `${ctx}: label must be non-empty string`,
+    );
+
+    for (const scheme of ['light', 'dark']) {
+      const colors = category.colors?.[scheme];
+      if (!isRecord(colors)) {
+        errors.push(`${ctx}: colors.${scheme} must be an object`);
+        continue;
+      }
+      for (const key of ['bg', 'text']) {
+        check(
+          typeof colors[key] === 'string' && COLOR_PATTERN.test(colors[key]),
+          `${ctx}: colors.${scheme}.${key} must be a hex color like #rrggbb`,
+        );
+      }
+    }
+  }
+} else if (categories !== null) {
+  errors.push('categories.json: root must be an array');
+}
+
 // --- topics.json ---
 const topics = readJson('data/topics.json');
 const topicIds = new Set();
@@ -39,18 +74,22 @@ const topicIds = new Set();
 if (Array.isArray(topics)) {
   const texts = new Set();
   for (const [i, topic] of topics.entries()) {
-    const ctx = `topics[${i}] (id=${topic?.id ?? '?'})`;
+    if (!isRecord(topic)) {
+      errors.push(`topics[${i}]: must be an object`);
+      continue;
+    }
+    const ctx = `topics[${i}] (id=${topic.id ?? '?'})`;
 
     check(
       typeof topic.id === 'string' && TOPIC_ID_PATTERN.test(topic.id),
-      `${ctx}: id must match /topic-\\d{3}/`,
+      `${ctx}: id must match /topic-\\d{3,}/`,
     );
     check(!topicIds.has(topic.id), `${ctx}: duplicate id`);
     topicIds.add(topic.id);
 
     check(
-      VALID_CATEGORIES.has(topic.category),
-      `${ctx}: unknown category "${topic.category}" (expected one of ${[...VALID_CATEGORIES].join(', ')})`,
+      categoryIds.has(topic.category),
+      `${ctx}: unknown category "${topic.category}" (expected one of ${[...categoryIds].join(', ')})`,
     );
 
     check(
@@ -75,7 +114,11 @@ if (Array.isArray(styles)) {
 
   const styleIds = new Set();
   for (const [i, style] of styles.entries()) {
-    const ctx = `styles[${i}] (id=${style?.id ?? '?'})`;
+    if (!isRecord(style)) {
+      errors.push(`styles[${i}]: must be an object`);
+      continue;
+    }
+    const ctx = `styles[${i}] (id=${style.id ?? '?'})`;
 
     check(
       typeof style.id === 'string' && style.id.length > 0,
@@ -100,12 +143,12 @@ if (Array.isArray(styles)) {
 // --- excluded_ids.json ---
 const excluded = readJson('data/excluded_ids.json');
 if (excluded !== null) {
-  check(Array.isArray(excluded.excluded_ids), 'excluded_ids.json: excluded_ids must be an array');
-
-  if (Array.isArray(excluded.excluded_ids)) {
+  if (isRecord(excluded) && Array.isArray(excluded.excluded_ids)) {
     for (const id of excluded.excluded_ids) {
       check(topicIds.has(id), `excluded_ids.json: "${id}" does not reference any topic`);
     }
+  } else {
+    errors.push('excluded_ids.json: excluded_ids must be an array');
   }
 }
 
@@ -118,5 +161,8 @@ if (errors.length > 0) {
 
 const topicCount = Array.isArray(topics) ? topics.length : 0;
 const styleCount = Array.isArray(styles) ? styles.length : 0;
+const categoryCount = Array.isArray(categories) ? categories.length : 0;
 const excludedCount = excluded?.excluded_ids?.length ?? 0;
-console.log(`✓ validated ${topicCount} topics / ${styleCount} styles / ${excludedCount} excluded`);
+console.log(
+  `✓ validated ${topicCount} topics / ${categoryCount} categories / ${styleCount} styles / ${excludedCount} excluded`,
+);

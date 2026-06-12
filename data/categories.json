@@ -1,0 +1,90 @@
+[
+  {
+    "id": "tools",
+    "label": "道具",
+    "colors": {
+      "light": { "bg": "#e7ebef", "text": "#4a5563" },
+      "dark": { "bg": "#353b44", "text": "#b3bccc" }
+    }
+  },
+  {
+    "id": "food",
+    "label": "食",
+    "colors": {
+      "light": { "bg": "#f5e9d3", "text": "#8a5e1f" },
+      "dark": { "bg": "#463a29", "text": "#d9b078" }
+    }
+  },
+  {
+    "id": "hobby",
+    "label": "趣味",
+    "colors": {
+      "light": { "bg": "#ece2f3", "text": "#6b4a96" },
+      "dark": { "bg": "#3d2f48", "text": "#c2a4dd" }
+    }
+  },
+  {
+    "id": "childhood",
+    "label": "子供のころ",
+    "colors": {
+      "light": { "bg": "#f5edcc", "text": "#8a6c1a" },
+      "dark": { "bg": "#443a23", "text": "#d9c074" }
+    }
+  },
+  {
+    "id": "travel",
+    "label": "旅",
+    "colors": {
+      "light": { "bg": "#d9e9e9", "text": "#2c7a78" },
+      "dark": { "bg": "#2c3f3f", "text": "#88c2c0" }
+    }
+  },
+  {
+    "id": "bgm",
+    "label": "BGM",
+    "colors": {
+      "light": { "bg": "#f3dee7", "text": "#a04a72" },
+      "dark": { "bg": "#422a35", "text": "#d990a8" }
+    }
+  },
+  {
+    "id": "season",
+    "label": "季節",
+    "colors": {
+      "light": { "bg": "#dce8d4", "text": "#4f7841" },
+      "dark": { "bg": "#2e3b30", "text": "#94c089" }
+    }
+  },
+  {
+    "id": "lifestyle",
+    "label": "暮らし",
+    "colors": {
+      "light": { "bg": "#efe1cd", "text": "#84613a" },
+      "dark": { "bg": "#423829", "text": "#d4b285" }
+    }
+  },
+  {
+    "id": "imagination",
+    "label": "もしも",
+    "colors": {
+      "light": { "bg": "#e2e1f7", "text": "#5a55a8" },
+      "dark": { "bg": "#322f4a", "text": "#a8a4e0" }
+    }
+  },
+  {
+    "id": "gadget",
+    "label": "ガジェット",
+    "colors": {
+      "light": { "bg": "#d8e7f2", "text": "#2f6a96" },
+      "dark": { "bg": "#28394a", "text": "#86b8d9" }
+    }
+  },
+  {
+    "id": "learning",
+    "label": "学び",
+    "colors": {
+      "light": { "bg": "#f5e0d6", "text": "#9c5230" },
+      "dark": { "bg": "#463028", "text": "#d99e7d" }
+    }
+  }
+]

@@ -1,14 +1,5 @@
-type Style = {
-  id: string;
-  name: string;
-  description: string;
-};
-
-type Topic = {
-  id: string;
-  category: string;
-  text: string;
-};
+import { pickStyle, pickTopics } from './gacha.ts';
+import type { Category, Style, Topic } from './gacha.ts';
 
 type ExcludedIdsFile = {
   excluded_ids: string[];
@@ -18,96 +9,34 @@ type AppData = {
   styles: Style[];
   topics: Topic[];
   excluded: Set<string>;
+  categories: Map<string, Category>;
 };
 
 const TOPIC_COUNT = 9;
 const MAX_PER_CATEGORY = 2;
 
-const CATEGORY_LABEL: Record<string, string> = {
-  tools: '道具',
-  food: '食',
-  hobby: '趣味',
-  childhood: '子供のころ',
-  travel: '旅',
-  bgm: 'BGM',
-  season: '季節',
-  lifestyle: '暮らし',
-  imagination: 'もしも',
-  gadget: 'ガジェット',
-  learning: '学び',
-};
+async function fetchJson<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`${url} の取得に失敗しました (HTTP ${res.status})`);
+  }
+  return res.json() as Promise<T>;
+}
 
 async function loadData(): Promise<AppData> {
-  const [styles, topics, excluded] = await Promise.all([
-    fetch('./data/styles.json').then((r) => r.json() as Promise<Style[]>),
-    fetch('./data/topics.json').then((r) => r.json() as Promise<Topic[]>),
-    fetch('./data/excluded_ids.json').then((r) => r.json() as Promise<ExcludedIdsFile>),
+  const [styles, topics, excluded, categories] = await Promise.all([
+    fetchJson<Style[]>('./data/styles.json'),
+    fetchJson<Topic[]>('./data/topics.json'),
+    fetchJson<ExcludedIdsFile>('./data/excluded_ids.json'),
+    fetchJson<Category[]>('./data/categories.json'),
   ]);
 
   return {
     styles,
     topics,
     excluded: new Set(excluded.excluded_ids),
+    categories: new Map(categories.map((c) => [c.id, c])),
   };
-}
-
-function shuffle<T>(arr: readonly T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j]!, a[i]!];
-  }
-  return a;
-}
-
-function pickStyle(styles: Style[], current?: Style): Style {
-  if (styles.length === 0) {
-    throw new Error('styles.json が空です');
-  }
-  if (styles.length === 1 || !current) {
-    return styles[Math.floor(Math.random() * styles.length)]!;
-  }
-  const others = styles.filter((s) => s.id !== current.id);
-  return others[Math.floor(Math.random() * others.length)]!;
-}
-
-function pickTopics(
-  topics: Topic[],
-  excluded: Set<string>,
-  count: number,
-  maxPerCategory: number,
-): Topic[] {
-  const pool = topics.filter((t) => !excluded.has(t.id));
-  if (pool.length < count) {
-    return shuffle(pool);
-  }
-
-  const shuffled = shuffle(pool);
-  const picked: Topic[] = [];
-  const perCategory: Record<string, number> = {};
-
-  for (const topic of shuffled) {
-    if (picked.length >= count) break;
-    const used = perCategory[topic.category] ?? 0;
-    if (used >= maxPerCategory) continue;
-    picked.push(topic);
-    perCategory[topic.category] = used + 1;
-  }
-
-  if (picked.length < count) {
-    const pickedIds = new Set(picked.map((t) => t.id));
-    for (const topic of shuffled) {
-      if (picked.length >= count) break;
-      if (pickedIds.has(topic.id)) continue;
-      picked.push(topic);
-    }
-  }
-
-  return picked;
-}
-
-function categoryLabel(category: string): string {
-  return CATEGORY_LABEL[category] ?? category;
 }
 
 function renderStyle(style: Style, root: HTMLElement) {
@@ -123,16 +52,24 @@ function renderStyle(style: Style, root: HTMLElement) {
   root.append(name, desc);
 }
 
-function renderTopics(topics: Topic[], root: HTMLElement) {
+function renderTopics(topics: Topic[], categories: Map<string, Category>, root: HTMLElement) {
   root.innerHTML = '';
   for (const topic of topics) {
     const card = document.createElement('article');
     card.className = 'topic-card';
     card.dataset.category = topic.category;
 
+    const category = categories.get(topic.category);
+    if (category) {
+      card.style.setProperty('--cat-bg-light', category.colors.light.bg);
+      card.style.setProperty('--cat-text-light', category.colors.light.text);
+      card.style.setProperty('--cat-bg-dark', category.colors.dark.bg);
+      card.style.setProperty('--cat-text-dark', category.colors.dark.text);
+    }
+
     const tag = document.createElement('span');
     tag.className = 'category-tag';
-    tag.textContent = categoryLabel(topic.category);
+    tag.textContent = category?.label ?? topic.category;
 
     const text = document.createElement('p');
     text.className = 'topic-text';
@@ -188,7 +125,7 @@ async function main() {
 
   const rerollTopics = () => {
     const topics = pickTopics(data.topics, data.excluded, TOPIC_COUNT, MAX_PER_CATEGORY);
-    renderTopics(topics, topicsGrid);
+    renderTopics(topics, data.categories, topicsGrid);
     flash(topicsGrid);
   };
 
