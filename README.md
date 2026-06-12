@@ -2,7 +2,7 @@
 
 職場のコミュニケーション促進用の Web ページです。
 今日の「会話スタイル」を1つと、「雑談ネタ」を9個ランダムに引いて表示します。
-Cloudflare Workers (Workers Assets) で配信します。
+Cloudflare Workers (Workers Assets) の静的アセット配信のみで動きます（Worker スクリプトなし）。
 
 🌐 **本番**: https://zatsudan-gacha.kiakiraki.workers.dev
 
@@ -11,9 +11,9 @@ Cloudflare Workers (Workers Assets) で配信します。
 ```
 zatsudan-gacha/
 ├── src/
-│   ├── index.ts          # Worker entry（ASSETS にフォワードするだけ）
 │   └── client/
-│       ├── main.ts       # フロントロジック（抽選＋レンダリング）
+│       ├── gacha.ts      # 抽選ロジック（純粋関数、テスト対象）
+│       ├── main.ts       # フロントロジック（データ読み込み＋レンダリング）
 │       └── styles.css    # スタイル（ライト/ダーク自動）
 ├── public/
 │   ├── index.html        # 唯一の HTML
@@ -21,20 +21,18 @@ zatsudan-gacha/
 │   ├── styles.css        # build でコピー（git 管理対象外）
 │   └── data/             # build でコピー（git 管理対象外）
 ├── data/                 # データのソース（編集対象はこちら）
-│   ├── styles.json       # 会話スタイル 4 個
-│   ├── topics.json       # 雑談ネタ 248 個
+│   ├── styles.json       # 会話スタイル
+│   ├── topics.json       # 雑談ネタ
+│   ├── categories.json   # カテゴリ定義（id・ラベル・タグ色）
 │   └── excluded_ids.json # 配信時に除外する topic id
+├── tests/                # 抽選ロジックのユニットテスト（node:test）
 ├── build.mjs             # esbuild ベースのビルドスクリプト
 ├── package.json
 ├── pnpm-workspace.yaml   # pnpm 11 の allowBuilds 設定
 ├── mise.toml             # node / pnpm のバージョン pin
-├── tsconfig.json         # ルート（project references のみ）
-├── tsconfig.worker.json  # src/index.ts 用（@cloudflare/workers-types）
-├── tsconfig.client.json  # src/client/ 用（DOM lib）
+├── tsconfig.json
 └── wrangler.toml
 ```
-
-> tsconfig を Worker と Client で分けているのは、`@cloudflare/workers-types` の global が DOM の同名 API（`append` など）と競合するためです。
 
 ## 抽選ロジック（クライアント側）
 
@@ -99,23 +97,26 @@ pnpm deploy
 [{ "id": "topic-001", "category": "tools", "text": "..." }]
 ```
 
-カテゴリは 11 種類:
+`category` は `data/categories.json` に定義されているものだけが使えます（CI の `validate:data` でチェック）。各カテゴリの内容の目安は `docs/topic-generation-prompt.md` を参照してください。
 
-| category      | 内容                                         |
-| ------------- | -------------------------------------------- |
-| `tools`       | キーボード/椅子/机周り/文房具などの作業道具  |
-| `food`        | コーヒー/お昼/おやつ/料理                    |
-| `hobby`       | ゲーム/読書/音楽/映画/スポーツ観戦/写真      |
-| `childhood`   | 子供のころハマったもの、習い事               |
-| `travel`      | 旅行先、行ってみたい場所                     |
-| `bgm`         | 集中/作業中の BGM、好きなジャンル            |
-| `season`      | 季節・天気・年中行事、季節の思い出           |
-| `lifestyle`   | 日常のルーティン、暮らしの工夫、最近の気づき |
-| `imagination` | 「もし〜だったら」の仮定法・空想ネタ         |
-| `gadget`      | 日常のアプリ/家電/QOL ガジェット             |
-| `learning`    | 学び・インプット習慣、最近知ったこと         |
+### カテゴリ (`data/categories.json`)
 
-新カテゴリを追加した場合は `src/client/main.ts` の `CATEGORY_LABEL` にも日本語ラベルを足すと、タグが日本語で表示されます（無くても英字のまま出ます）。
+カテゴリの定義（id・日本語ラベル・タグの配色）はこのファイルに集約されています。
+
+```json
+[
+  {
+    "id": "tools",
+    "label": "道具",
+    "colors": {
+      "light": { "bg": "#e7ebef", "text": "#4a5563" },
+      "dark": { "bg": "#353b44", "text": "#b3bccc" }
+    }
+  }
+]
+```
+
+新カテゴリを追加するときは、ここに 1 エントリ足すだけで、ラベル表示とタグの配色（ライト/ダーク両方）まで反映されます。コード側の変更は不要です。
 
 ### 除外リスト (`data/excluded_ids.json`)
 
@@ -129,10 +130,12 @@ pnpm deploy
 
 `docs/topic-generation-prompt.md` に AI 用の生成プロンプトを置いてあります。これまでの運用で気づいた失敗パターン（二者択一、YES/NO、時期依存など）を「悪い例」として明文化してあるので、そのまま AI に渡せば再発を抑えられます。
 
-## 型チェック
+## 型チェック・テスト
 
 ```bash
 pnpm typecheck
+pnpm test          # 抽選ロジックのユニットテスト（node:test、Node 24 の TS 直接実行）
+pnpm validate:data # データの整合性チェック
 ```
 
 ## メモ

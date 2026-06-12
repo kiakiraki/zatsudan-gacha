@@ -30,5 +30,8 @@ jobs:
       - name: Validate data
         run: pnpm validate:data
 
+      - name: Test
+        run: pnpm test
+
       - name: Build
         run: pnpm build
