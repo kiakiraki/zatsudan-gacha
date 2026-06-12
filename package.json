@@ -16,9 +16,9 @@
     "validate:data": "node scripts/validate-data.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.28.0",
-    "prettier": "^3.8.3",
+    "esbuild": "^0.28.1",
+    "prettier": "^3.8.4",
     "typescript": "^6.0.3",
-    "wrangler": "^4.94.0"
+    "wrangler": "^4.100.0"
   }
 }
