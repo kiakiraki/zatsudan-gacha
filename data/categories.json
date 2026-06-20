@@ -102,5 +102,37 @@
       "light": { "bg": "#d6edf3", "text": "#19708e" },
       "dark": { "bg": "#263c44", "text": "#7cc0d6" }
     }
+  },
+  {
+    "id": "health",
+    "label": "からだ",
+    "colors": {
+      "light": { "bg": "#f2ddd8", "text": "#9c4a42" },
+      "dark": { "bg": "#432e2c", "text": "#d6948b" }
+    }
+  },
+  {
+    "id": "values",
+    "label": "価値観",
+    "colors": {
+      "light": { "bg": "#ede0ea", "text": "#7d4570" },
+      "dark": { "bg": "#3d2c3a", "text": "#c490b6" }
+    }
+  },
+  {
+    "id": "local",
+    "label": "地元",
+    "colors": {
+      "light": { "bg": "#e6e3d1", "text": "#6d6530" },
+      "dark": { "bg": "#393728", "text": "#c2bc7e" }
+    }
+  },
+  {
+    "id": "misc",
+    "label": "よもやま",
+    "colors": {
+      "light": { "bg": "#e4dfe0", "text": "#6b5a60" },
+      "dark": { "bg": "#383234", "text": "#c0b0b5" }
+    }
   }
 ]
