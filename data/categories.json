@@ -128,6 +128,14 @@
     }
   },
   {
+    "id": "blunder",
+    "label": "やらかし",
+    "colors": {
+      "light": { "bg": "#fce4cc", "text": "#b85c1e" },
+      "dark": { "bg": "#4a3520", "text": "#e0a060" }
+    }
+  },
+  {
     "id": "misc",
     "label": "よもやま",
     "colors": {
