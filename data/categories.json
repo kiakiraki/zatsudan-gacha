@@ -142,5 +142,37 @@
       "light": { "bg": "#e4dfe0", "text": "#6b5a60" },
       "dark": { "bg": "#383234", "text": "#c0b0b5" }
     }
+  },
+  {
+    "id": "words",
+    "label": "ことば",
+    "colors": {
+      "light": { "bg": "#dee3f6", "text": "#4d5cae" },
+      "dark": { "bg": "#2d3149", "text": "#a0abe3" }
+    }
+  },
+  {
+    "id": "senses",
+    "label": "五感",
+    "colors": {
+      "light": { "bg": "#eaf0cd", "text": "#6f7d22" },
+      "dark": { "bg": "#3b4025", "text": "#c3cc78" }
+    }
+  },
+  {
+    "id": "fandom",
+    "label": "推し",
+    "colors": {
+      "light": { "bg": "#f9dcec", "text": "#b0307e" },
+      "dark": { "bg": "#462a3a", "text": "#e07eb8" }
+    }
+  },
+  {
+    "id": "craft",
+    "label": "つくる",
+    "colors": {
+      "light": { "bg": "#d8eed8", "text": "#2f7d38" },
+      "dark": { "bg": "#29402b", "text": "#87cb90" }
+    }
   }
 ]
